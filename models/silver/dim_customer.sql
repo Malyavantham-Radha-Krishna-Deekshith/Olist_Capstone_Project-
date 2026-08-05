@@ -29,7 +29,7 @@ most_recent_address as (
 )
 
 select
-    {{ dbt_utils.generate_surrogate_key(['customer_unique_id']) }} as customer_sk,
+    md5(customer_unique_id) as customer_sk,
     customer_unique_id,
     customer_zip_code_prefix,
     coalesce(customer_city, 'unknown')  as customer_city,
