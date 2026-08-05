@@ -13,25 +13,23 @@ models:
           - unique
           - not_null
           - relationships:
-              arguments:
-                to: ref('dim_customer')
-                field: customer_sk
+              to: ref('dim_customer')
+              field: customer_sk
       - name: rfm_segment
         tests:
           - accepted_values:
-              arguments:
-                values:
-                  - 'Champions'
-                  - 'Loyal Customers'
-                  - 'Cannot Lose Them'
-                  - 'Potential Loyalists'
-                  - 'New Customers'
-                  - 'Promising'
-                  - 'Need Attention'
-                  - 'At Risk'
-                  - 'About To Sleep'
-                  - 'Hibernating'
-                  - 'Lost'
+              values:
+                - 'Champions'
+                - 'Loyal Customers'
+                - 'Cannot Lose Them'
+                - 'Potential Loyalists'
+                - 'New Customers'
+                - 'Promising'
+                - 'Need Attention'
+                - 'At Risk'
+                - 'About To Sleep'
+                - 'Hibernating'
+                - 'Lost'
 
   - name: fact_manager_performance
     columns:
@@ -40,6 +38,5 @@ models:
           - unique
           - not_null
           - relationships:
-              arguments:
-                to: ref('dim_manager')
-                field: manager_id
+              to: ref('dim_manager')
+              field: manager_id

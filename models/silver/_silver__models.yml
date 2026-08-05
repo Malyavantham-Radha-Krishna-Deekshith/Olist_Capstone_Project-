@@ -16,9 +16,8 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
-                to: ref('dim_customer')
-                field: customer_sk
+              to: ref('dim_customer')
+              field: customer_sk
 
   - name: dim_product
     columns:
@@ -33,9 +32,8 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
-                to: ref('dim_manager')
-                field: manager_id
+              to: ref('dim_manager')
+              field: manager_id
 
   - name: dim_manager
     columns:
@@ -54,8 +52,7 @@ models:
       - name: review_score
         tests:
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4, 5]
+              values: [1, 2, 3, 4, 5]
               config:
                 where: "review_score is not null"
 
@@ -77,18 +74,15 @@ models:
         tests:
           - not_null
           - relationships:
-              arguments:
-                to: ref('dim_customer')
-                field: customer_sk
+              to: ref('dim_customer')
+              field: customer_sk
       - name: order_status
         tests:
           - accepted_values:
-              arguments:
-                values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'unavailable', 'created', 'approved']
+              values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'unavailable', 'created', 'approved']
       - name: delivery_performance_flag
         tests:
           - accepted_values:
-              arguments:
-                values: ['early', 'on_time', 'late']
+              values: ['early', 'on_time', 'late']
               config:
                 where: "delivery_performance_flag is not null"

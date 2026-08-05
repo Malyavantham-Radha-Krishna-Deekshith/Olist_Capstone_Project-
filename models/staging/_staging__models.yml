@@ -17,8 +17,7 @@ models:
       - name: order_status
         tests:
           - accepted_values:
-              arguments:
-                values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'unavailable', 'created', 'approved']
+              values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'unavailable', 'created', 'approved']
 
   - name: stg_olist__order_items
     columns:
@@ -53,8 +52,7 @@ models:
       - name: review_score
         tests:
           - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4, 5]
+              values: [1, 2, 3, 4, 5]
               config:
                 where: "review_score is not null"
 
