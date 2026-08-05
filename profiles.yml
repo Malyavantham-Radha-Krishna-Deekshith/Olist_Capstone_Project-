@@ -1,0 +1,12 @@
+Olist_Capstone_Project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: 'not needed'
+      user: 'not needed'
+      role: ACCOUNTADMIN
+      database: CAPSTONE_DB
+      schema: BRONZE
+      warehouse: DE_PIPELINE_WH
+      threads: 4
