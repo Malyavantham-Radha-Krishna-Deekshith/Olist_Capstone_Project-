@@ -1,0 +1,94 @@
+version: 2
+
+models:
+  - name: dim_customer
+    columns:
+      - name: customer_sk
+        tests: [unique, not_null]
+      - name: customer_unique_id
+        tests: [unique, not_null]
+
+  - name: bridge_customer_order
+    columns:
+      - name: customer_id
+        tests: [unique, not_null]
+      - name: customer_sk
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_sk
+
+  - name: dim_product
+    columns:
+      - name: product_id
+        tests: [unique, not_null]
+
+  - name: dim_seller
+    columns:
+      - name: seller_id
+        tests: [unique, not_null]
+      - name: manager_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_manager')
+                field: manager_id
+
+  - name: dim_manager
+    columns:
+      - name: manager_id
+        tests: [unique, not_null]
+
+  - name: dim_geography
+    columns:
+      - name: zip_code_prefix
+        tests: [unique, not_null]
+
+  - name: dim_review
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: review_score
+        tests:
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+              config:
+                where: "review_score is not null"
+
+  - name: fact_order_items_agg
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+
+  - name: fact_payments_agg
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+
+  - name: fact_orders
+    columns:
+      - name: order_id
+        tests: [unique, not_null]
+      - name: customer_sk
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customer')
+                field: customer_sk
+      - name: order_status
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing', 'unavailable', 'created', 'approved']
+      - name: delivery_performance_flag
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['early', 'on_time', 'late']
+              config:
+                where: "delivery_performance_flag is not null"

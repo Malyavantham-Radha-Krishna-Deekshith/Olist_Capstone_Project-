@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: CAPSTONE_DB
+    schema: BRONZE
+    tables:
+      - name: customers
+      - name: orders
+      - name: order_items
+      - name: payments
+      - name: products
+      - name: sellers
+      - name: reviews
+      - name: geolocation
+      - name: category_translation
