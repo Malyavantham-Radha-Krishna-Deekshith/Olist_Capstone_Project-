@@ -234,9 +234,10 @@ SCHEMAS = {
 }
 
 
-# Runs once per day at midnight UTC ("0 0 0 * * *" = sec min hour day month day-of-week)
-@app.timer_trigger(schedule="0 0 0 * * *", arg_name="timer", run_on_startup=False, use_monitor=True)
-def generate_incremental_data(timer: func.TimerRequest) -> None:
+# HTTP-triggered so Azure Data Factory exclusively controls when this runs
+# (no independent schedule of its own, avoiding double-execution with ADF's trigger).
+@app.route(route="generate", methods=["POST", "GET"], auth_level=func.AuthLevel.FUNCTION)
+def generate_incremental_data(req: func.HttpRequest) -> func.HttpResponse:
     client = _blob_service()
 
     sim_date = _load_cursor(client)
@@ -250,7 +251,14 @@ def generate_incremental_data(timer: func.TimerRequest) -> None:
     next_sim_date = min(sim_date + timedelta(days=SIM_DAYS_PER_RUN), SIM_END_DATE)
     _save_cursor(client, next_sim_date)
 
-    logging.info(
-        "Run complete: sim_date=%s -> %s, orders=%d, new_customers=%d",
-        sim_date.date(), next_sim_date.date(), len(batch["orders"]), len(batch["customers"]),
+    result = {
+        "sim_date_before": sim_date.date().isoformat(),
+        "sim_date_after": next_sim_date.date().isoformat(),
+        "orders": len(batch["orders"]),
+        "new_customers": len(batch["customers"]),
+        "batch_id": batch_id,
+    }
+    logging.info("Run complete: %s", result)
+    return func.HttpResponse(
+        json.dumps(result), status_code=200, mimetype="application/json"
     )
