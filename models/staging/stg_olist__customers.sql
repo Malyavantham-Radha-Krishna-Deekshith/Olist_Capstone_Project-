@@ -3,5 +3,6 @@ select
     customer_unique_id,
     customer_zip_code_prefix,
     customer_city,
-    customer_state
+    customer_state,
+    _loaded_at
 from {{ source('bronze', 'customers') }}

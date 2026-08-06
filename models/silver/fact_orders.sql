@@ -2,7 +2,8 @@
     config(
         materialized='incremental',
         unique_key='order_id',
-        incremental_strategy='merge'
+        incremental_strategy='merge',
+        on_schema_change='sync_all_columns'
     )
 }}
 
@@ -26,7 +27,8 @@ select
         when date(o.order_delivered_customer_date) < date(o.order_estimated_delivery_date) then 'early'
         when date(o.order_delivered_customer_date) = date(o.order_estimated_delivery_date) then 'on_time'
         else 'late'
-    end as delivery_performance_flag
+    end as delivery_performance_flag,
+    o._loaded_at
 from {{ ref('stg_olist__orders') }} o
 left join {{ ref('bridge_customer_order') }} b
     on o.customer_id = b.customer_id
@@ -34,3 +36,6 @@ left join {{ ref('fact_order_items_agg') }} oi
     on o.order_id = oi.order_id
 left join {{ ref('fact_payments_agg') }} p
     on o.order_id = p.order_id
+{% if is_incremental() %}
+where o._loaded_at > (select max(_loaded_at) from {{ this }})
+{% endif %}

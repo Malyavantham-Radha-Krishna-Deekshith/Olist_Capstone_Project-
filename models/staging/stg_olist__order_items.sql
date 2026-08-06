@@ -5,5 +5,6 @@ select
     seller_id,
     try_to_timestamp_ntz(shipping_limit_date) as shipping_limit_date,
     price,
-    freight_value
+    freight_value,
+    _loaded_at
 from {{ source('bronze', 'order_items') }}
