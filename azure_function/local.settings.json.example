@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "BLOB_SAS_TOKEN": "<your SAS token here, no leading '?'>",
+    "STORAGE_ACCOUNT_URL": "https://olistcapstoneproject.blob.core.windows.net",
+    "CONTAINER_NAME": "bronze-landing",
+    "ORDERS_PER_RUN": "30",
+    "SIM_DAYS_PER_RUN": "61",
+    "NEW_CUSTOMER_RATE": "0.2"
+  }
+}

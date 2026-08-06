@@ -5,3 +5,6 @@ logs/
 .env
 .venv/
 .user.yml
+azure_function/local.settings.json
+azure_function/__pycache__/
+azure_function/.python_packages/
